@@ -32,12 +32,7 @@ class SettingsRepositoryImpl(
 
     override suspend fun saveSetting(periodic: Long, delayed: Long) {
         withContext(dispatcher) {
-            // Реализуйте функционал записи в dataStore
-            // Для periodic ключ - REFRESH_PERIOD_KEY
-            // Для delayed ключ - FIRST_LAUNCH_DELAY_KEY
-            // После записи данных обновите _state
-            dataStore.edit{
-                pref: MutablePreferences ->
+            dataStore.edit { pref: MutablePreferences ->
                 pref[REFRESH_PERIOD_KEY] = periodic
                 pref[FIRST_LAUNCH_DELAY_KEY] = delayed
                 _state.value = SettingContainer(periodic = periodic, delayed = delayed)
@@ -47,15 +42,11 @@ class SettingsRepositoryImpl(
 
 
     override suspend fun readSetting() {
-        withContext(dispatcher){
-            // Реализуйте функционал чтения данных  из dataStore.
-            // Для periodic ключ - REFRESH_PERIOD_KEY, значение по умолчанию SettingContainer.DEFAULT_REFRESH_PERIOD
-            // Для delayed ключ - FIRST_LAUNCH_DELAY_KEY, значение по умолчанию SettingContainer.FIST_LAUNCH_DELAY
-            // После чтения данных обновите _state
-            dataStore.data.collect {
-                    pref: Preferences ->
-                val periodic = pref[REFRESH_PERIOD_KEY]?: SettingContainer.DEFAULT_REFRESH_PERIOD
-                val delayed = pref[FIRST_LAUNCH_DELAY_KEY]?: SettingContainer.DEFAULT_REFRESH_PERIOD
+        withContext(dispatcher) {
+            dataStore.data.collect { pref: Preferences ->
+                val periodic = pref[REFRESH_PERIOD_KEY] ?: SettingContainer.DEFAULT_REFRESH_PERIOD
+                val delayed =
+                    pref[FIRST_LAUNCH_DELAY_KEY] ?: SettingContainer.DEFAULT_REFRESH_PERIOD
                 _state.value = SettingContainer(periodic = periodic, delayed = delayed)
             }
 

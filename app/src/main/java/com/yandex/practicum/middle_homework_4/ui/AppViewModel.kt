@@ -27,9 +27,6 @@ class AppViewModel(
 
     @OptIn(ExperimentalPagingApi::class)
     fun getNews(): Flow<PagingData<News>> =
-    // Допишите реализацию метода, используя класс Pager()
-    // Для реализации фабрики используйте newsDatabase
-    // Реализуйте NewsRemoteMediator() используя newsService и newsDatabase
         Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
@@ -53,7 +50,7 @@ class AppViewModel(
         pagingItems = null
     }
 
-    fun refreshData(){
+    fun refreshData() {
         pagingItems?.refresh()
     }
 
